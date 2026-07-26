@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import csv
 import io
+import os
 from datetime import datetime
 
 st.set_page_config(
@@ -10,7 +11,6 @@ st.set_page_config(
     layout="wide"
 )
 
-# ---- constants ----
 CRITICAL_PCT = 0.25
 HEALTHY_PCT  = 0.80
 
@@ -18,13 +18,9 @@ ALERT_EMAIL  = "warehouse-manager@company.com"
 SENDER_EMAIL = "alerts@inventory-system.com"
 
 
-# ---- core logic (same as inventory_alert.py) ----
-
-def load_stock_from_file(uploaded_file):
+def load_stock_from_string(content):
     records = []
     warnings = []
-
-    content = uploaded_file.read().decode("utf-8")
     reader  = csv.DictReader(io.StringIO(content))
 
     for row_num, row in enumerate(reader, start=2):
@@ -168,20 +164,50 @@ def to_csv_bytes(flagged):
     return output.getvalue().encode("utf-8")
 
 
-# ---- UI ----
+# Read default stock CSV for sample download & quick load
+script_dir = os.path.dirname(os.path.abspath(__file__))
+sample_path = os.path.join(script_dir, "stock.csv")
+sample_csv_text = ""
+if os.path.exists(sample_path):
+    with open(sample_path, "r", encoding="utf-8") as f:
+        sample_csv_text = f.read()
 
+# UI Layout
 st.title("Inventory Reorder Alert System")
-st.caption("Upload your stock CSV to scan for items that need restocking.")
+st.caption("Upload your stock CSV or use our sample data to scan for items needing restock.")
 
 st.divider()
 
-uploaded = st.file_uploader("Upload stock.csv", type=["csv"])
+col_a, col_b = st.columns([1, 1])
 
-if not uploaded:
-    st.info("Upload a CSV file with columns: sku, item_name, category, current_quantity, reorder_threshold, max_capacity, unit, supplier")
+with col_a:
+    if sample_csv_text:
+        st.download_button(
+            label="📥 Download Sample stock.csv",
+            data=sample_csv_text,
+            file_name="stock.csv",
+            mime="text/csv",
+            help="Click to download the sample stock CSV file to test the upload feature."
+        )
+
+with col_b:
+    use_sample = st.button("⚡ Use Sample Stock Data", help="Instantly run the scan using the built-in sample data.")
+
+uploaded = st.file_uploader("Or upload your own stock CSV file", type=["csv"])
+
+content_to_parse = None
+
+if uploaded is not None:
+    content_to_parse = uploaded.read().decode("utf-8")
+elif use_sample or st.session_state.get("used_sample", False):
+    st.session_state["used_sample"] = True
+    content_to_parse = sample_csv_text
+
+if content_to_parse is None:
+    st.info("💡 **Tip:** Click **'📥 Download Sample stock.csv'** to get a test file, or click **'⚡ Use Sample Stock Data'** to test immediately!")
     st.stop()
 
-records, warnings = load_stock_from_file(uploaded)
+records, warnings = load_stock_from_string(content_to_parse)
 
 if warnings:
     with st.expander(f"Parse warnings ({len(warnings)})"):
@@ -198,12 +224,12 @@ critical_items = [i for i in flagged if i["priority"] == "CRITICAL"]
 low_items      = [i for i in flagged if i["priority"] == "LOW"]
 ok_count       = len(records) - len(flagged)
 
-# ---- summary metrics ----
-col1, col2, col3, col4 = st.columns(4)
-col1.metric("Total Items",    len(records))
-col2.metric("OK",             ok_count)
-col3.metric("Low Stock",      len(low_items))
-col4.metric("Critical",       len(critical_items), delta=f"-{len(critical_items)}" if critical_items else None, delta_color="inverse")
+# Metrics
+c1, c2, c3, c4 = st.columns(4)
+c1.metric("Total Items", len(records))
+c2.metric("OK", ok_count)
+c3.metric("Low Stock", len(low_items))
+c4.metric("Critical", len(critical_items), delta=f"-{len(critical_items)}" if critical_items else None, delta_color="inverse")
 
 st.divider()
 
@@ -211,7 +237,7 @@ if not flagged:
     st.success("All stock levels are within acceptable ranges.")
     st.stop()
 
-# ---- restock table ----
+# Restock table
 st.subheader("Items Needing Restock")
 
 df = pd.DataFrame([{
@@ -238,9 +264,8 @@ def highlight_priority(row):
 styled = df.style.apply(highlight_priority, axis=1)
 st.dataframe(styled, use_container_width=True, hide_index=True)
 
-# ---- download button ----
 st.download_button(
-    label="Download restock_report.csv",
+    label="📊 Export restock_report.csv",
     data=to_csv_bytes(flagged),
     file_name="restock_report.csv",
     mime="text/csv",
@@ -248,14 +273,12 @@ st.download_button(
 
 st.divider()
 
-# ---- simulated email ----
 st.subheader("Simulated Email Alert")
 email_text = build_email_text(flagged)
 st.code(email_text, language=None)
 
 st.divider()
 
-# ---- reflection ----
 with st.expander("Reflection note"):
     st.markdown("""
 With more time, there are a few things I'd want to improve here.
