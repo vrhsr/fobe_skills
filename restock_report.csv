@@ -1,0 +1,17 @@
+priority,sku,item_name,category,current_qty,reorder_threshold,max_capacity,shortage,reorder_qty,unit,supplier
+CRITICAL,SKU-7002,Surgical Masks,Safety,0,100,500,100,400,pack,SafeSupply Co.
+CRITICAL,SKU-7001,Latex Gloves (Box),Safety,3,50,200,47,157,box,SafeSupply Co.
+CRITICAL,SKU-6120,Adhesive Labels,Office,15,60,300,45,225,sheet,OfficeWorld
+CRITICAL,SKU-4456,Cardboard Boxes (L),Packaging,9,50,250,41,191,unit,PackRight Inc.
+CRITICAL,SKU-7003,Hand Sanitizer 500ml,Hygiene,0,30,150,30,120,bottle,CleanFirst Ltd.
+CRITICAL,SKU-9004,Heavy Duty Shelf Labels,Office,0,25,150,25,120,sheet,OfficeWorld
+CRITICAL,SKU-9003,Floor Sweeper Bags,Hygiene,0,12,60,12,48,bag,CleanFirst Ltd.
+CRITICAL,SKU-8012,First Aid Kit,Safety,1,5,30,4,23,kit,SafeSupply Co.
+LOW,SKU-1042,Cotton Fabric Roll,Textiles,18,60,300,42,222,roll,TextilePro Ltd.
+LOW,SKU-3311,Steel Bolts (M6),Hardware,42,80,400,38,278,pack,BoltMaster Co.
+LOW,SKU-8010,Stretch Wrap Film,Packaging,6,20,100,14,74,roll,PackRight Inc.
+LOW,SKU-8011,Safety Goggles,Safety,8,20,100,12,72,pair,SafeSupply Co.
+LOW,SKU-9001,Printer Ink Cartridge,Office,3,10,40,7,29,cartridge,OfficeWorld
+LOW,SKU-9006,Safety Vest,Safety,11,15,60,4,37,unit,SafeSupply Co.
+LOW,SKU-9007,Nitrogen Gas Canister,Industrial,2,5,20,3,14,canister,GasWorks Ltd.
+LOW,SKU-9005,Pallet Wrap,Packaging,18,20,100,2,62,roll,PackRight Inc.

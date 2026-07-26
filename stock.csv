@@ -1,0 +1,21 @@
+sku,item_name,category,current_quantity,reorder_threshold,max_capacity,unit,supplier
+SKU-1042,Cotton Fabric Roll,Textiles,18,60,300,roll,TextilePro Ltd.
+SKU-2087,Packing Tape,Packaging,240,30,500,roll,PackRight Inc.
+SKU-3311,Steel Bolts (M6),Hardware,42,80,400,pack,BoltMaster Co.
+SKU-4456,Cardboard Boxes (L),Packaging,9,50,250,unit,PackRight Inc.
+SKU-5502,Bubble Wrap Roll,Packaging,130,40,200,roll,PackRight Inc.
+SKU-6120,Adhesive Labels,Office,15,60,300,sheet,OfficeWorld
+SKU-7001,Latex Gloves (Box),Safety,3,50,200,box,SafeSupply Co.
+SKU-7002,Surgical Masks,Safety,0,100,500,pack,SafeSupply Co.
+SKU-7003,Hand Sanitizer 500ml,Hygiene,0,30,150,bottle,CleanFirst Ltd.
+SKU-8010,Stretch Wrap Film,Packaging,6,20,100,roll,PackRight Inc.
+SKU-8011,Safety Goggles,Safety,8,20,100,pair,SafeSupply Co.
+SKU-8012,First Aid Kit,Safety,1,5,30,kit,SafeSupply Co.
+SKU-9001,Printer Ink Cartridge,Office,3,10,40,cartridge,OfficeWorld
+SKU-9002,Cleaning Cloths,Hygiene,50,40,200,pack,CleanFirst Ltd.
+SKU-9003,Floor Sweeper Bags,Hygiene,0,12,60,bag,CleanFirst Ltd.
+SKU-9004,Heavy Duty Shelf Labels,Office,,25,150,sheet,OfficeWorld
+SKU-9005,Pallet Wrap,Packaging,18,20,100,roll,PackRight Inc.
+SKU-9006,Safety Vest,Safety,11,15,60,unit,SafeSupply Co.
+SKU-9007,Nitrogen Gas Canister,Industrial,2,5,20,canister,GasWorks Ltd.
+SKU-9008,Emergency Exit Signs,Safety,7,5,30,unit,SafeSupply Co.
