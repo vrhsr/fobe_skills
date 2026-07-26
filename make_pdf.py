@@ -92,30 +92,32 @@ def generate_pdf():
 
     # Title Header
     elements.append(Paragraph("Inventory Reorder Alert System", title_style))
-    elements.append(Paragraph("Python Intern Technical Assessment | Complete Submission Documentation", subtitle_style))
+    elements.append(Paragraph("Python Intern Technical Assessment | Submission Report", subtitle_style))
     elements.append(HRFlowable(width="100%", thickness=1, color=colors.HexColor("#CBD5E0"), spaceAfter=12))
 
-    # Section 1: Overview & Links
-    elements.append(Paragraph("1. Assessment Summary & Approach", heading2_style))
-    approach_text = (
-        "This submission implements an automated inventory alert backend job designed for daily warehouse stock scanning.<br/><br/>"
-        "<b>Core Design & Highlights:</b><br/>"
-        "• <b>File Parsing:</b> Utilizes <code>csv.DictReader</code> to extract row data into standard Python dictionary objects.<br/>"
-        "• <b>Priority Threshold Logic:</b> Items below threshold are automatically flagged as <code>CRITICAL</code> (stock &le; 25% of threshold) or <code>LOW</code> (stock &lt; threshold).<br/>"
-        "• <b>Reorder Calculation:</b> Suggests explicit restock quantities required to bring stock levels back up to 80% of max capacity.<br/>"
-        "• <b>Robust Edge-Case Handling:</b> Handled missing quantities (defaulting to 0 with log warnings), blank threshold fields, and bad rows gracefully without crashing.<br/>"
-        "• <b>Multiple Reporting Channels:</b> Formatted console outputs, simulated email bodies, exported <code>restock_report.csv</code>, and an interactive Streamlit UI."
-    )
-    elements.append(Paragraph(approach_text, body_style))
-    elements.append(Spacer(1, 4))
-
-    elements.append(Paragraph("Submission Links", heading3_style))
+    # Submission Links Section (Featured Prominently)
+    elements.append(Paragraph("Submission Links & Resources", heading2_style))
     links_text = (
-        "<b>GitHub Repository:</b> https://github.com/vrhsr/fobe_skills<br/>"
-        "<b>Core Backend Script:</b> <code>inventory_alert.py</code><br/>"
-        "<b>Streamlit App Script:</b> <code>app.py</code>"
+        "<b>Live Interactive Streamlit App:</b> <font color='#2B6CB0'><u>https://fobeskills.streamlit.app/</u></font><br/>"
+        "<b>GitHub Repository:</b> <font color='#2B6CB0'><u>https://github.com/vrhsr/fobe_skills</u></font><br/>"
+        "<b>Backend Script:</b> <code>inventory_alert.py</code><br/>"
+        "<b>Web UI Script:</b> <code>app.py</code>"
     )
     elements.append(Paragraph(links_text, body_style))
+    elements.append(Spacer(1, 6))
+
+    # Section 1: Overview & Approach
+    elements.append(Paragraph("1. Assessment Summary & Technical Approach", heading2_style))
+    approach_text = (
+        "This submission implements an automated inventory alert system for daily warehouse management.<br/><br/>"
+        "<b>Key Technical Highlights:</b><br/>"
+        "• <b>File Handling & Structuring:</b> Reads CSV rows into clean Python dictionary structures using <code>csv.DictReader</code>.<br/>"
+        "• <b>Priority Threshold Logic:</b> Items running below threshold are categorized into <code>CRITICAL</code> (stock &le; 25% of threshold) or <code>LOW</code> (stock &lt; threshold).<br/>"
+        "• <b>Reorder Calculation:</b> Computes exact quantities needed to restock items back up to 80% of max capacity.<br/>"
+        "• <b>Edge-Case Handling:</b> Gracefully handles missing quantities (defaulting to 0 with log warnings), blank threshold fields, and malformed rows without crashing.<br/>"
+        "• <b>Multi-Format Output:</b> Formatted console log, simulated email alert, <code>restock_report.csv</code> export, and a live Streamlit dashboard with built-in sample data download."
+    )
+    elements.append(Paragraph(approach_text, body_style))
     elements.append(Spacer(1, 8))
 
     # Helper function to append code in chunks
@@ -125,7 +127,6 @@ def generate_pdf():
             with open(filepath, "r", encoding="utf-8") as f:
                 lines = f.readlines()
             
-            # Split into 50-line chunks for clean pagination
             chunk_size = 50
             for i in range(0, len(lines), chunk_size):
                 chunk_text = "".join(lines[i:i+chunk_size])
