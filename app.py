@@ -7,7 +7,6 @@ from datetime import datetime
 
 st.set_page_config(
     page_title="Inventory Reorder Alert System",
-    page_icon="📦",
     layout="wide"
 )
 
@@ -164,7 +163,6 @@ def to_csv_bytes(flagged):
     return output.getvalue().encode("utf-8")
 
 
-# Read default stock CSV for sample download & quick load
 script_dir = os.path.dirname(os.path.abspath(__file__))
 sample_path = os.path.join(script_dir, "stock.csv")
 sample_csv_text = ""
@@ -172,9 +170,8 @@ if os.path.exists(sample_path):
     with open(sample_path, "r", encoding="utf-8") as f:
         sample_csv_text = f.read()
 
-# UI Layout
 st.title("Inventory Reorder Alert System")
-st.caption("Upload your stock CSV or use our sample data to scan for items needing restock.")
+st.caption("Upload your stock CSV or use sample data to scan for items needing restock.")
 
 st.divider()
 
@@ -183,15 +180,15 @@ col_a, col_b = st.columns([1, 1])
 with col_a:
     if sample_csv_text:
         st.download_button(
-            label="📥 Download Sample stock.csv",
+            label="Download Sample stock.csv",
             data=sample_csv_text,
             file_name="stock.csv",
             mime="text/csv",
-            help="Click to download the sample stock CSV file to test the upload feature."
+            help="Download the sample stock CSV file to test the upload feature."
         )
 
 with col_b:
-    use_sample = st.button("⚡ Use Sample Stock Data", help="Instantly run the scan using the built-in sample data.")
+    use_sample = st.button("Use Sample Stock Data", help="Instantly run the scan using built-in sample data.")
 
 uploaded = st.file_uploader("Or upload your own stock CSV file", type=["csv"])
 
@@ -204,7 +201,7 @@ elif use_sample or st.session_state.get("used_sample", False):
     content_to_parse = sample_csv_text
 
 if content_to_parse is None:
-    st.info("💡 **Tip:** Click **'📥 Download Sample stock.csv'** to get a test file, or click **'⚡ Use Sample Stock Data'** to test immediately!")
+    st.info("Tip: Click 'Download Sample stock.csv' to get a test file, or click 'Use Sample Stock Data' to test immediately.")
     st.stop()
 
 records, warnings = load_stock_from_string(content_to_parse)
@@ -224,7 +221,6 @@ critical_items = [i for i in flagged if i["priority"] == "CRITICAL"]
 low_items      = [i for i in flagged if i["priority"] == "LOW"]
 ok_count       = len(records) - len(flagged)
 
-# Metrics
 c1, c2, c3, c4 = st.columns(4)
 c1.metric("Total Items", len(records))
 c2.metric("OK", ok_count)
@@ -237,7 +233,6 @@ if not flagged:
     st.success("All stock levels are within acceptable ranges.")
     st.stop()
 
-# Restock table
 st.subheader("Items Needing Restock")
 
 df = pd.DataFrame([{
@@ -265,7 +260,7 @@ styled = df.style.apply(highlight_priority, axis=1)
 st.dataframe(styled, use_container_width=True, hide_index=True)
 
 st.download_button(
-    label="📊 Export restock_report.csv",
+    label="Export restock_report.csv",
     data=to_csv_bytes(flagged),
     file_name="restock_report.csv",
     mime="text/csv",
